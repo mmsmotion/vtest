@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreStudentRequest;
 use App\Http\Requests\UpdateStudentRequest;
+use App\Models\Custom;
 use App\Models\Student;
 use Illuminate\Support\Facades\Validator;
 
@@ -39,8 +40,11 @@ class StudentController extends Controller
     {
 
         $request->validate([
-            "name" => "required|min:3|max:10",
-            "email" => "required"
+            "name" => "required|min:3|max:20",
+            "email" => "required|unique:students,email",
+            'gender' => "required|in:" . implode(',', Custom::$gender),
+            'skill' => "required",
+            'skill.*' => "in:" . implode(',', Custom::$skill),
         ]);
         return $request;
     }
